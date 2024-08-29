@@ -19,13 +19,22 @@ export function getTemplate({
       <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 
       <style>
-        body > main {
+        body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          margin: 0;
+        }
+
+        main {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          min-height: calc(100vh - 7rem);
-          padding: 1rem 0;
+          align-items: center;
+          padding: 1rem;
           max-width: 600px;
+          width: 100%;
         }
 
         .error {
@@ -33,6 +42,7 @@ export function getTemplate({
           border-radius: 10px;
           color: var(--del-color);
           padding: 0.5em 1em;
+          margin-bottom: 1rem;
         }
 
         h2 { color: var(--color-h2); }
