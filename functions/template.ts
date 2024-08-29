@@ -31,7 +31,6 @@ export function getTemplate({
           display: flex;
           flex-direction: column;
           justify-content: center;
-          align-items: center;
           padding: 1rem;
           max-width: 600px;
           width: 100%;
@@ -42,7 +41,6 @@ export function getTemplate({
           border-radius: 10px;
           color: var(--del-color);
           padding: 0.5em 1em;
-          margin-bottom: 1rem;
         }
 
         h2 { color: var(--color-h2); }
