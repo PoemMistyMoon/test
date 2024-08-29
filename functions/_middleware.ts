@@ -9,22 +9,22 @@ export async function onRequest(context: {
 }): Promise<Response> {
   const { request, next, env } = context;
   const { pathname, searchParams } = new URL(request.url);
-  const { error } = Object.fromEntries(searchParams);
+  const { error, token } = Object.fromEntries(searchParams);
   const cookie = request.headers.get('cookie') || '';
   const cookieKeyValue = await getCookieKeyValue(env.CFP_PASSWORD);
 
+  // Check if the token in the URL matches the CFP_PASSWORD
   if (
     cookie.includes(cookieKeyValue) ||
-    // allow the request to cfp_login only if it is a POST request
     (request.method == "POST" && pathname === '/cfp_login') ||
     CFP_ALLOWED_PATHS.includes(pathname) ||
-    !env.CFP_PASSWORD
+    !env.CFP_PASSWORD ||
+    token === env.CFP_PASSWORD // New condition to bypass password protection
   ) {
-    // Correct hash in cookie, allowed path, or no password set.
-    // Continue to next middleware.
+    // Correct hash in cookie, allowed path, no password set, or correct token in URL
     return await next();
   } else {
-    // No cookie or incorrect hash in cookie. Redirect to login.
+    // No cookie or incorrect hash in cookie, or missing/incorrect token. Redirect to login.
     return new Response(getTemplate({ redirectPath: pathname, withError: error === '1' }), {
       headers: {
         'content-type': 'text/html'
